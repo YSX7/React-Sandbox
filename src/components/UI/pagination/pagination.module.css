@@ -1,0 +1,10 @@
+.page__current {
+  border: 2px solid orange;
+  font-weight: bold;
+  color: orange;
+}
+
+.page__wrapper {
+  margin: 30px 0;
+  display: flex;
+}

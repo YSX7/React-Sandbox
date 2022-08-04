@@ -1,0 +1,118 @@
+html,
+body {
+  height: 100%;
+}
+
+:root {
+  --post-padding: 15px;
+  --post-margin: 15px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+hr {
+  margin: 10px 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.App {
+  width: 800px;
+}
+
+.post {
+  display: flex;
+  padding: var(--post-padding);
+  border: 2px solid teal;
+  margin-top: var(--post-margin);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post__btns {
+  display: flex;
+}
+
+.post-enter {
+  opacity: 0;
+  transform: rotateX(90deg);
+}
+.post-enter-active {
+  opacity: 1;
+  transform: rotateX(0deg);
+  transition: all 50ms linear;
+}
+.post-exit {
+  opacity: 1;
+  overflow: hidden;
+  padding: var(--post-padding);
+  height: 100%;
+  margin-top: var(--post-margin);
+  /* margin-bottom: 0;*/
+}
+.post-exit-active {
+  padding: 0px;
+  opacity: 0;
+  /*border: 0px;*/
+  transform: rotateX(90deg);
+  overflow: hidden;
+  transition: all 100ms linear;
+  margin: 0;
+}
+
+.navbar {
+  height: 50px;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  background-color: gainsboro;
+}
+
+.navbar__items {
+  display: flex;
+}
+
+.navbar__items.left {
+  margin-left: auto;
+}
+
+.navbar__items.right {
+  margin-left: auto;
+}
+
+.navbar__items .login {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.navbar__items a {
+  margin-right: 20px;
+}
+
+.navbar_item_active {
+  background-color: red;
+}
+
+.customers h3 {
+  border: 1px solid lightblue;
+  cursor: pointer;
+  font-size: 32px;
+}
+
+.post-id-page-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}

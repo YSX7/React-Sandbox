@@ -1,0 +1,37 @@
+.left-enter {
+  position: absolute;
+  transform: translateX(100vw);
+}
+.left-enter-active {
+  position: absolute;
+  transform: translateX(0vw);
+  transition: transform 1000ms ease-in-out;
+}
+.left-exit {
+  transform: translateX(0vw);
+  /* position: absolute; */
+}
+.left-exit-active {
+  /* position: absolute; */
+  transform: translateX(-100vw);
+  transition: transform 1000ms ease-in-out;
+}
+
+.right-enter {
+  position: absolute;
+  transform: translateX(-100vw);
+}
+.right-enter-active {
+  position: absolute;
+  transform: translateX(0vw);
+  transition: transform 1000ms ease-in-out;
+}
+.right-exit {
+  transform: translateX(0vw);
+  /* position: absolute; */
+}
+.right-exit-active {
+  /* position: absolute; */
+  transform: translateX(100vw);
+  transition: transform 1000ms ease-in-out;
+}

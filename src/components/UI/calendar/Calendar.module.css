@@ -1,0 +1,74 @@
+.parent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+table {
+  max-width: 50vw;
+  height: 100%;
+}
+
+.parent td {
+  width: 90px;
+  cursor: pointer;
+}
+
+.parent td:hover {
+  background-color: #00808042;
+}
+
+.calendarFlipImg {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  width: 50vw;
+}
+
+table {
+  min-width: 50vw;
+  background-color: white;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.controls > * {
+  flex: 1 0 0;
+}
+
+table.centered td {
+  text-align: center;
+}
+
+.controls > div {
+  display: flex;
+}
+
+.controls > *:not(:nth-child(2)) {
+  flex-shrink: 1;
+  max-width: fit-content;
+  margin-right: auto;
+}
+
+.controls > :nth-child(2) {
+  text-align: center;
+  max-width: fit-content;
+}
+
+.today {
+  color: teal;
+  font-weight: bold;
+}
+
+.neighbour {
+  color: darkgrey;
+}
