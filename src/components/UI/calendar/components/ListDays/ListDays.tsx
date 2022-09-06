@@ -13,8 +13,8 @@ import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 import classes from "./ListDays.module.css";
 import calendarClasses from "../../Calendar.module.css";
-import september3 from "@/styles/september3.png";
 import { CalendarComponentProps } from "../../types";
+import Images from "./Holidays";
 
 const ListDays = (props: CalendarComponentProps) => {
   const [isSeptemberThirdHovered, setIsSeptemberThirdHovered] = useState(false);
@@ -43,7 +43,7 @@ const ListDays = (props: CalendarComponentProps) => {
         if (dayjs().format("DMYYY") === loopMonth.format("DMYYY"))
           className = calendarClasses.today;
         //Если 3 сентября - активируем Шуфутинского
-        if (dayjs().format("DM") !== "39") {
+        if (dayjs().format("DM") == "39") {
           if (loopMonth.format("DM") === "39") {
             attributes["onMouseOver"] = () => {
               setIsSeptemberThirdHovered(true);

@@ -9,7 +9,7 @@ const Events: FC = (props: Props) => {
   return (
     <React.Fragment>
       <Calendar events={[]} />
-      <Button style={{ marginBottom: "10px" }}>Добавить событие</Button>
+      <Button m={"10px 0"}>Добавить событие</Button>
     </React.Fragment>
   );
 };

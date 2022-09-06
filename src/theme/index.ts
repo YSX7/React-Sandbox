@@ -2,19 +2,50 @@ import {
   chakra,
   ComponentStyleConfig,
   extendTheme,
+  theme,
   withDefaultColorScheme,
   type ThemeConfig,
 } from "@chakra-ui/react";
-import { IconButton } from "@/components/UI/calendar/theme";
+import { SystemStyleFunction } from "@chakra-ui/theme-tools";
+
+export const IconButton: ComponentStyleConfig = {
+  variants: {
+    fullheight: {
+      height: "100%",
+    },
+  },
+};
+
+const baseStyle: SystemStyleFunction = ({ colorMode }) => ({
+  bg: "transparent",
+  color: colorMode === "dark" ? "white" : "teal",
+});
 
 const Button: ComponentStyleConfig = {
-  baseStyle: {
-    color: "teal",
-    bg: "transparent",
+  baseStyle: baseStyle,
+  variants: {
+    base: {
+      _hover: {
+        bg: "teal",
+        color: "white",
+      },
+    },
+    link: {},
+  },
+  defaultProps: {
+    variant: "base",
   },
 };
 
 const overrides = {
+  // styles: {
+  //   global: {
+  //     button: {
+  //       bg: "red",
+  //     },
+  //   },
+  // },
+  colors: {},
   config: { initialColorMode: "dark", useSystemColorMode: false },
   components: {
     Button,

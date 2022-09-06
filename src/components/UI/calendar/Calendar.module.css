@@ -38,7 +38,7 @@ table {
 
 table {
   min-width: 50vw;
-  background-color: white;
+  /* background-color: white; */
 }
 
 .controls {
