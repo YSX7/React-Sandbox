@@ -9,6 +9,8 @@ import Weekday from "dayjs/plugin/weekday";
 import LocaleData from "dayjs/plugin/localeData";
 import WeekOfYear from "dayjs/plugin/weekOfYear";
 import Duration from "dayjs/plugin/duration";
+import { ColorModeScript } from "@chakra-ui/react";
+import theme from "./theme";
 
 const container = document.getElementById("root");
 const root = createRoot(container as Element);
@@ -22,6 +24,7 @@ dayjs.extend(Duration);
 
 root.render(
   <Provider store={store}>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <App />
   </Provider>
 );

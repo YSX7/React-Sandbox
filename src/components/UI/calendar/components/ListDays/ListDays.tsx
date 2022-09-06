@@ -14,7 +14,7 @@ import React, { useMemo, useState } from "react";
 import classes from "./ListDays.module.css";
 import calendarClasses from "../../Calendar.module.css";
 import september3 from "@/styles/september3.png";
-import { CalendarComponentProps, WrapperProps } from "../../types";
+import { CalendarComponentProps } from "../../types";
 
 const ListDays = (props: CalendarComponentProps) => {
   const [isSeptemberThirdHovered, setIsSeptemberThirdHovered] = useState(false);
@@ -43,13 +43,17 @@ const ListDays = (props: CalendarComponentProps) => {
         if (dayjs().format("DMYYY") === loopMonth.format("DMYYY"))
           className = calendarClasses.today;
         //Если 3 сентября - активируем Шуфутинского
-        if (loopMonth.format("DM") === "39") {
-          attributes["onMouseOver"] = () => {
-            setIsSeptemberThirdHovered(true);
-          };
-          attributes["onMouseLeave"] = () => {
-            setIsSeptemberThirdHovered(false);
-          };
+        if (dayjs().format("DM") !== "39") {
+          if (loopMonth.format("DM") === "39") {
+            attributes["onMouseOver"] = () => {
+              setIsSeptemberThirdHovered(true);
+            };
+            attributes["onMouseLeave"] = () => {
+              setIsSeptemberThirdHovered(false);
+            };
+          }
+        } else {
+          setIsSeptemberThirdHovered(true);
         }
         currentWeekElements.push(
           <Td
@@ -70,7 +74,7 @@ const ListDays = (props: CalendarComponentProps) => {
   const currentMonthElements = useMemo(constructDaysCalendar, [selectedDate]);
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%", ...props.style }}>
       <ChakraImage
         className={classes.mishanya}
         visibility={isSeptemberThirdHovered ? "visible" : "hidden"}

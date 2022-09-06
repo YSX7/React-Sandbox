@@ -1,9 +1,12 @@
 import { useActions } from "@/hooks/useActions";
 import useTypedSelector from "@/hooks/useTypedSelector";
+import { Container, Flex, useColorModeValue } from "@chakra-ui/react";
+import classNames from "classnames";
 import React from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import MyButton, { MyButtonVariant } from "../button/MyButton";
 import Link from "../link/Link";
+import classes from "./navbar.module.css";
 
 function Navbar() {
   const { isAuth, user } = useTypedSelector((state) => state.authReducer);
@@ -11,8 +14,10 @@ function Navbar() {
   const navigate = useNavigate();
   const { logout } = useActions();
 
+  const navbarBg = useColorModeValue("gray.200", "gray.900");
+
   return (
-    <div className="navbar">
+    <Flex bg={navbarBg} className={classes.navbar}>
       {/* Если мы на странице с постом - рисуем бацк */}
       {match?.params?.id && (
         <MyButton
@@ -26,15 +31,15 @@ function Navbar() {
       )}
       {isAuth && (
         <React.Fragment>
-          <div className="navbar__items left">
+          <div className={classNames(classes.navbar__items, classes.left)}>
             <Link to="/posts">Posts</Link>
             <Link to="/about">About</Link>
             <Link to="/test">Test counter</Link>
             <Link to="/redux">Redux</Link>
             <Link to="/events">Events</Link>
           </div>
-          <div className="navbar__items right">
-            <div className="login">{user.login}</div>
+          <div className={classNames(classes.navbar__items, classes.right)}>
+            <div className={classes.login}>{user.login}</div>
             <MyButton
               variant={MyButtonVariant.shadowed}
               onClick={() => logout()}
@@ -44,7 +49,7 @@ function Navbar() {
           </div>
         </React.Fragment>
       )}
-    </div>
+    </Flex>
   );
 }
 

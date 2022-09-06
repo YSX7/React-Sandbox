@@ -5,7 +5,7 @@ import { CalendarComponentProps } from "../../types";
 import classes from "../../Calendar.module.css";
 
 const ListMonths = (props: CalendarComponentProps) => {
-  const { isCalendarFlipped, Wrapper, calendarClick } = props;
+  const { isCalendarFlipped, Wrapper, calendarClick, ...propes } = props;
 
   const monthElements = [];
   for (let i = 0; i < 3; i++)
@@ -18,7 +18,9 @@ const ListMonths = (props: CalendarComponentProps) => {
             <Td
               key={elem}
               className={dayjs().month() === index + i * 4 && classes.today}
-              onClick={() => calendarClick(index + i * 4)}
+              onClick={() =>
+                calendarClick !== undefined && calendarClick(index + i * 4)
+              }
             >
               {elem}
             </Td>

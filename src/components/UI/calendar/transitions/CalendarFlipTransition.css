@@ -1,29 +1,29 @@
-.enter {
+.flip-enter {
   transform-origin: center center -250px;
   transform: rotate3d(0, 1, 0, 180deg);
   opacity: 0;
 }
 
-.enterActive {
+.flip-enter-active {
   transform-origin: center center -250px;
   transform: rotate3d(0, 1, 0, 0deg);
   opacity: 1;
   transition: all 400ms;
 }
 
-.exit {
+.flip-exit {
   transform-origin: center center -250px;
   transform: rotate3d(0, 1, 0, 0deg);
   opacity: 1;
 }
 
-.exitActive {
+.flip-exit-active {
   transform-origin: center center -250px;
   transform: rotate3d(0, 1, 0, 180deg);
   transition: all 400ms;
   opacity: 0;
 }
 
-.exitDone {
+.flip-exit-done {
   opacity: 0;
 }

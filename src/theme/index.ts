@@ -1,10 +1,27 @@
-import { extendTheme } from "@chakra-ui/react";
+import {
+  chakra,
+  ComponentStyleConfig,
+  extendTheme,
+  withDefaultColorScheme,
+  type ThemeConfig,
+} from "@chakra-ui/react";
 import { IconButton } from "@/components/UI/calendar/theme";
 
-const overrides = {
-  components: {
-    IconButton,
+const Button: ComponentStyleConfig = {
+  baseStyle: {
+    color: "teal",
+    bg: "transparent",
   },
 };
 
-export default extendTheme(overrides);
+const overrides = {
+  config: { initialColorMode: "dark", useSystemColorMode: false },
+  components: {
+    Button,
+  },
+};
+
+export default extendTheme(
+  overrides,
+  withDefaultColorScheme({ colorScheme: "teal" })
+);

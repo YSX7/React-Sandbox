@@ -17,9 +17,10 @@ interface IMyButtonProps extends ButtonProps {
 
 const MyButton: FC<IMyButtonProps> = ({ children, variant, ...props }) => {
   const rootClasses = cl(classes.myBtn, props.className);
+
   return (
     <Button
-      bg="transparent"
+      border="1px solid teal"
       {...props}
       className={rootClasses}
       style={{

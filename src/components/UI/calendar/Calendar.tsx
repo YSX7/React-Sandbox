@@ -1,24 +1,18 @@
 import { IEvent } from "@/models/IEvent";
 import {
   Image,
-  Button,
   Grid,
   GridItem,
-  TableBodyProps,
+  Container,
+  Box,
+  useColorMode,
 } from "@chakra-ui/react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import classes from "./Calendar.module.css";
-import FlipTransition from "./transitions/CalendarFlipTransition.module.css";
+import "./transitions/CalendarFlipTransition.css";
 import "./transitions/CalendarSlideTransition.css";
 import dayjs from "dayjs";
-import React, {
-  FC,
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
 import "dayjs/locale/ru";
 import Shoefootinskiy from "/september3.mp3";
 import NavigationButton, {
@@ -28,20 +22,22 @@ import calendarFlipImage from "@/styles/calendarFlip.jpg";
 import ListDays from "./components/ListDays/ListDays";
 import TableCSSTransition from "./components/TableCSSTransition";
 import ListMonths from "./components/ListMonths/ListMonths";
-import objectSupport from "dayjs/plugin/objectSupport";
 import ListYears from "./components/ListYears/ListYears";
+import {
+  animated,
+  easings,
+  useTransition,
+  UseTransitionProps,
+} from "react-spring";
+import Status from "./components/Status/Status";
+import { CalendarMode } from "./types";
+import Button from "@/components/UI/button/MyButton";
 
 type CalendarProps = { events: IEvent[] };
 
-enum CalendarMode {
-  Days = "Days",
-  Months = "Months",
-  Years = "Years",
-}
-
 const Calendar: FC<CalendarProps> = (props) => {
-  const changeMonth = (changedMonthOffset: number) => {
-    setSelectedDate(selectedDate.add(changedMonthOffset, "M"));
+  const changeMonth = (offset: number) => {
+    setSelectedDate(selectedDate.add(offset, "M"));
   };
 
   const changeYears = (offset: number) => {
@@ -58,9 +54,13 @@ const Calendar: FC<CalendarProps> = (props) => {
   const [isCalendarFlipped, setIsCalendarFlipped] = useState(false);
   const [calendarMode, setCalendarMode] = useState(CalendarMode.Days);
   const [isMoveLeft, setIsMoveLeft] = useState(false);
+  const [isZoomIn, setIsZoomIn] = useState(true);
+  const [isScrolling, setIsScrolling] = useState(false);
+
   let navButtonMethod = useCallback(
     (offset: number) => {
       setIsMoveLeft(offset < 0);
+      setIsScrolling(true);
       // isMoveLeft = offset < 0;
       switch (calendarMode) {
         case CalendarMode.Days:
@@ -83,33 +83,70 @@ const Calendar: FC<CalendarProps> = (props) => {
     return song;
   }, []);
 
-  const renderListElements = () => {
-    switch (calendarMode) {
+  const scrollTransition = useTransition<string, UseTransitionProps>(
+    selectedDate.format("DDMMYYYY"),
+    {
+      initial: { transform: "translateX(0vw)" },
+      from: {
+        transform: `translateX(${isMoveLeft ? "-100" : "100"}vw)`,
+        position: "absolute",
+        left: "25%",
+        opacity: 0,
+      },
+      enter: {
+        transform: "translateX(0vw)",
+        position: "",
+        opacity: 1,
+      },
+      leave: {
+        transform: `translateX(${isMoveLeft ? "100" : "-100"}vw)`,
+        position: "absolute",
+        left: "25%",
+        opacity: 0,
+      },
+      config: { duration: 500, easing: easings.easeOutExpo },
+    }
+  );
+
+  const zoomTransition = useTransition<string, UseTransitionProps>(
+    calendarMode,
+    {
+      initial: { scale: 1, opacity: 1, position: "initial" },
+      from: {
+        scale: isZoomIn ? 4 : 0,
+        opacity: 0,
+        left: "25%",
+      },
+      enter: { scale: 1, opacity: 1, position: "initial" },
+      leave: {
+        scale: isZoomIn ? 0 : 4,
+        opacity: 0,
+        position: "absolute",
+        left: "25%",
+      },
+      trail: 125,
+      config: { duration: 250 },
+    }
+  );
+
+  // useEffect(() => {
+  //   console.log("scroll start");
+  //   scrollAnimApi.start();
+  // }, [selectedDate.format("DDMMYYYY")]);
+
+  // useEffect(() => {
+  //   zoomAnimApi.start();
+  // }, [calendarMode]);
+
+  const renderListElements = (calendarArg?: CalendarMode) => {
+    switch (calendarArg ? calendarArg : calendarMode) {
       case CalendarMode.Days:
         return (
-          <TransitionGroup
-            childFactory={(child) =>
-              React.cloneElement(child, {
-                classNames: isMoveLeft ? "left" : "right",
-                timeout: 1000,
-              })
-            }
-          >
-            <CSSTransition
-              timeout={1000}
-              classNames="left"
-              key={selectedDate.month()}
-              // onEntered={(node: HTMLElement) => {
-              //   node.className = "";
-              // }}
-            >
-              <ListDays
-                Wrapper={TableCSSTransition}
-                isCalendarFlipped={isCalendarFlipped}
-                selectedDate={selectedDate}
-              />
-            </CSSTransition>
-          </TransitionGroup>
+          <ListDays
+            Wrapper={TableCSSTransition}
+            isCalendarFlipped={isCalendarFlipped}
+            selectedDate={selectedDate}
+          />
         );
       case CalendarMode.Months:
         return (
@@ -143,31 +180,39 @@ const Calendar: FC<CalendarProps> = (props) => {
   const onMonthClick = (newMonth: number) => {
     setSelectedDate(selectedDate.month(newMonth));
     setCalendarMode(CalendarMode.Days);
+    setIsScrolling(false);
+    setIsZoomIn(false);
   };
 
   const onYearClick = (newYear: number) => {
     setSelectedDate(selectedDate.year(newYear));
     setCalendarMode(CalendarMode.Months);
+    setIsScrolling(false);
+    setIsZoomIn(false);
   };
 
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <React.Fragment>
+    <Box className={classes.container}>
       <Grid templateColumns="1fr auto 1fr" className={classes.controls}>
         <GridItem></GridItem>
         <GridItem>
-          <Button
-            variant="link"
-            onClick={() => setCalendarMode(CalendarMode.Months)}
+          <Status
+            calendarMode={calendarMode}
+            onMonthClick={() => {
+              setIsScrolling(false);
+              setCalendarMode(CalendarMode.Months);
+              setIsZoomIn(true);
+            }}
+            onYearClick={() => {
+              setIsScrolling(false);
+              setCalendarMode(CalendarMode.Years);
+              setIsZoomIn(true);
+            }}
           >
-            {selectedDate.format("MMMM")}
-          </Button>
-          ,&nbsp;
-          <Button
-            variant="link"
-            onClick={() => setCalendarMode(CalendarMode.Years)}
-          >
-            {selectedDate.format("YYYY")}
-          </Button>
+            {selectedDate}
+          </Status>
         </GridItem>
         <GridItem>
           <Button
@@ -182,6 +227,7 @@ const Calendar: FC<CalendarProps> = (props) => {
           >
             Перевернуть календарь
           </Button>
+          <Button onClick={toggleColorMode}>Test</Button>
         </GridItem>
       </Grid>
       <div className={classes.parent} style={{ height: "100%" }}>
@@ -192,7 +238,7 @@ const Calendar: FC<CalendarProps> = (props) => {
         <CSSTransition
           in={isCalendarFlipped}
           timeout={400}
-          classNames={FlipTransition}
+          classNames="flip"
           unmountOnExit
         >
           <Image
@@ -201,13 +247,69 @@ const Calendar: FC<CalendarProps> = (props) => {
             alt="September 3"
           />
         </CSSTransition>
-        {renderListElements()}
+
+        {zoomTransition((zoomStyles, zoomItem, zt) => {
+          return isScrolling ? (
+            scrollTransition((styles, item, t) => {
+              return (
+                <animated.div
+                  className={classes.animatedDiv}
+                  style={isScrolling ? styles : zoomStyles}
+                >
+                  {renderListElements(zoomItem as CalendarMode)}
+                </animated.div>
+              );
+            })
+          ) : (
+            <animated.div className={classes.animatedDiv} style={zoomStyles}>
+              {renderListElements(zoomItem as CalendarMode)}
+            </animated.div>
+          );
+        })}
+
+        {/* {scrollTransition((styles, item, t) => {
+          console.log(scrollAnimApi.current[0]?.idle);
+          return (
+            <animated.div className={classes.animatedDiv} style={styles}>
+              {renderListElements()}
+            </animated.div>
+          );
+        })} */}
+
+        {/* {zoomTransition((zoomStyles, zoomItem, zt) => {
+          return (
+            <animated.div
+              key={zoomItem}
+              className={classes.animatedDiv}
+              style={zoomStyles}
+            >
+              {renderListElements(zoomItem)}
+            </animated.div>
+          );
+        })} */}
+
+        {/* {zoomTransition((zoomStyles, zoomItem, zt) =>
+          scrollTransition((styles, item, t) => {
+            console.log(t, zt);
+            return (
+              item && (
+                <animated.div
+                  className={classes.animatedDiv}
+                  style={{ ...zoomStyles, ...styles }}
+                >
+                  {renderListElements()}
+                </animated.div>
+              )
+            );
+          })
+        )} */}
+        {/* {renderListElements()} */}
         <NavigationButton
           type={CalendarNavigationButtonType.Right}
           changeMonth={navButtonMethod}
         />
       </div>
-    </React.Fragment>
+    </Box>
   );
 };
 
