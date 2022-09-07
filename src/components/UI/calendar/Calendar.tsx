@@ -18,7 +18,7 @@ import Shoefootinskiy from "/september3.mp3";
 import NavigationButton, {
   CalendarNavigationButtonType,
 } from "./components/NavigationButton/NavigationButton";
-import calendarFlipImage from "@/styles/calendarFlip.jpg";
+import calendarFlipImage from "./calendarFlip.jpg";
 import ListDays from "./components/ListDays/ListDays";
 import TableCSSTransition from "./components/TableCSSTransition";
 import ListMonths from "./components/ListMonths/ListMonths";
@@ -32,6 +32,7 @@ import {
 import Status from "./components/Status/Status";
 import { CalendarMode } from "./types";
 import Button from "@/components/UI/button/MyButton";
+import Images from "./components/ListDays/Holidays";
 
 type CalendarProps = { events: IEvent[] };
 
@@ -191,8 +192,6 @@ const Calendar: FC<CalendarProps> = (props) => {
     setIsZoomIn(false);
   };
 
-  const { colorMode, toggleColorMode } = useColorMode();
-
   return (
     <Box className={classes.container}>
       <Grid templateColumns="1fr auto 1fr" className={classes.controls}>
@@ -227,7 +226,7 @@ const Calendar: FC<CalendarProps> = (props) => {
           >
             Перевернуть календарь
           </Button>
-          <Button onClick={toggleColorMode}>Test</Button>
+          <Button>Test</Button>
         </GridItem>
       </Grid>
       <div className={classes.parent} style={{ height: "100%" }}>

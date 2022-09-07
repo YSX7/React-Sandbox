@@ -4,6 +4,7 @@ import React from "react";
 import { CalendarComponentProps } from "../../types";
 import classes from "../../Calendar.module.css";
 
+// TODO: поправить багулину с подсветкой "текущего" месяца, должно подсвечиваться только в текущем году
 const ListMonths = (props: CalendarComponentProps) => {
   const { isCalendarFlipped, Wrapper, calendarClick, ...propes } = props;
 

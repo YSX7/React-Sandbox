@@ -7,6 +7,7 @@ import {
   Td,
   TableCellProps,
   Image as ChakraImage,
+  Portal,
 } from "@chakra-ui/react";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import dayjs from "dayjs";
@@ -14,10 +15,17 @@ import React, { useMemo, useState } from "react";
 import classes from "./ListDays.module.css";
 import calendarClasses from "../../Calendar.module.css";
 import { CalendarComponentProps } from "../../types";
-import Images from "./Holidays";
+import Holidays from "./Holidays";
 
 const ListDays = (props: CalendarComponentProps) => {
-  const [isSeptemberThirdHovered, setIsSeptemberThirdHovered] = useState(false);
+  // for (const path in Images) {
+  //   Images[path]().then((mod) => {
+  //     console.log(path, mod);
+  //   });
+  // }
+  console.log(Holidays);
+  const [holidayImage, setHolidayImage] = useState("");
+  const [holidayHovered, setHolidayHovered] = useState(false);
   const { selectedDate, isCalendarFlipped, Wrapper } = props;
 
   const constructDaysCalendar = (): ReactJSXElement[] => {
@@ -40,20 +48,18 @@ const ListDays = (props: CalendarComponentProps) => {
         if (loopMonth.month() !== selectedDate.month())
           className = calendarClasses.neighbour;
         //Если текущий день - выделяем
-        if (dayjs().format("DMYYY") === loopMonth.format("DMYYY"))
+        if (dayjs().format("DMYYYY") === loopMonth.format("DMYYYY"))
           className = calendarClasses.today;
         //Если 3 сентября - активируем Шуфутинского
-        if (dayjs().format("DM") == "39") {
-          if (loopMonth.format("DM") === "39") {
-            attributes["onMouseOver"] = () => {
-              setIsSeptemberThirdHovered(true);
-            };
-            attributes["onMouseLeave"] = () => {
-              setIsSeptemberThirdHovered(false);
-            };
-          }
-        } else {
-          setIsSeptemberThirdHovered(true);
+        let dm = loopMonth.format("DM") as keyof typeof Holidays;
+        if (Holidays[dm]) {
+          attributes["onMouseOver"] = () => {
+            setHolidayImage(Holidays[dm]);
+            setHolidayHovered(true);
+          };
+          attributes["onMouseLeave"] = () => {
+            setHolidayHovered(false);
+          };
         }
         currentWeekElements.push(
           <Td
@@ -75,11 +81,13 @@ const ListDays = (props: CalendarComponentProps) => {
 
   return (
     <div style={{ height: "100%", ...props.style }}>
-      <ChakraImage
-        className={classes.mishanya}
-        visibility={isSeptemberThirdHovered ? "visible" : "hidden"}
-        src={september3}
-      />
+      <Portal>
+        <ChakraImage
+          className={classes.mishanya}
+          visibility={holidayHovered ? "visible" : "hidden"}
+          src={holidayImage}
+        />
+      </Portal>
       <Wrapper in={!isCalendarFlipped}>
         <Table variant="simple">
           <Thead>

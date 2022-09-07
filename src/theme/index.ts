@@ -16,13 +16,13 @@ export const IconButton: ComponentStyleConfig = {
   },
 };
 
-const baseStyle: SystemStyleFunction = ({ colorMode }) => ({
+const baseButtonStyle: SystemStyleFunction = ({ colorMode }) => ({
   bg: "transparent",
   color: colorMode === "dark" ? "white" : "teal",
 });
 
 const Button: ComponentStyleConfig = {
-  baseStyle: baseStyle,
+  baseStyle: baseButtonStyle,
   variants: {
     base: {
       _hover: {

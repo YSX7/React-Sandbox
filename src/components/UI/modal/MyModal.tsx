@@ -1,13 +1,13 @@
-import React, { FC } from "react";
+import React, { FC, PropsWithChildren } from "react";
 import classes from "./MyModal.module.css";
 import cl from "classnames";
 
-interface MyModalProps {
+interface MyModalProps{
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MyModal: FC<MyModalProps> = ({ children, visible, setVisible }) => {
+const MyModal: FC<PropsWithChildren<MyModalProps>> = ({ children, visible, setVisible }) => {
   const rootClasses = cl(classes.myModal, { [classes.active]: visible });
   // const rootClasses = [classes.MyModal];
   // if (visible) {

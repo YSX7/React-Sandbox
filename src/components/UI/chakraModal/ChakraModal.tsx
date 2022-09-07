@@ -3,12 +3,15 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogOverlay,
+  AlertDialogProps,
   useDisclosure,
 } from "@chakra-ui/react";
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
 import React, { FC, ReactSVG, RefObject } from "react";
 
 interface ChakraModalProps {
+  children: ReactJSXElement;
   isOpen: boolean;
   onClose: () => void;
   cancelRef: React.MutableRefObject<any>;
