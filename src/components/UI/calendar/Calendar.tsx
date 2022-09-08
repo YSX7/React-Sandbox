@@ -130,15 +130,6 @@ const Calendar: FC<CalendarProps> = (props) => {
     }
   );
 
-  // useEffect(() => {
-  //   console.log("scroll start");
-  //   scrollAnimApi.start();
-  // }, [selectedDate.format("DDMMYYYY")]);
-
-  // useEffect(() => {
-  //   zoomAnimApi.start();
-  // }, [calendarMode]);
-
   const renderListElements = (calendarArg?: CalendarMode) => {
     switch (calendarArg ? calendarArg : calendarMode) {
       case CalendarMode.Days:
@@ -266,43 +257,6 @@ const Calendar: FC<CalendarProps> = (props) => {
           );
         })}
 
-        {/* {scrollTransition((styles, item, t) => {
-          console.log(scrollAnimApi.current[0]?.idle);
-          return (
-            <animated.div className={classes.animatedDiv} style={styles}>
-              {renderListElements()}
-            </animated.div>
-          );
-        })} */}
-
-        {/* {zoomTransition((zoomStyles, zoomItem, zt) => {
-          return (
-            <animated.div
-              key={zoomItem}
-              className={classes.animatedDiv}
-              style={zoomStyles}
-            >
-              {renderListElements(zoomItem)}
-            </animated.div>
-          );
-        })} */}
-
-        {/* {zoomTransition((zoomStyles, zoomItem, zt) =>
-          scrollTransition((styles, item, t) => {
-            console.log(t, zt);
-            return (
-              item && (
-                <animated.div
-                  className={classes.animatedDiv}
-                  style={{ ...zoomStyles, ...styles }}
-                >
-                  {renderListElements()}
-                </animated.div>
-              )
-            );
-          })
-        )} */}
-        {/* {renderListElements()} */}
         <NavigationButton
           type={CalendarNavigationButtonType.Right}
           changeMonth={navButtonMethod}
