@@ -23,7 +23,7 @@ table {
   cursor: pointer;
 }
 
-.parent td:hover {
+.parent td:hover:not(.selected) {
   background-color: #00808042;
 }
 
@@ -82,4 +82,9 @@ table.centered td {
 
 .animatedDiv {
   height: 100%;
+}
+
+.selected {
+  background: teal;
+  color: white;
 }

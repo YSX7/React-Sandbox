@@ -6,7 +6,7 @@ import classes from "../../Calendar.module.css";
 
 // TODO: поправить багулину с подсветкой "текущего" месяца, должно подсвечиваться только в текущем году
 const ListMonths = (props: CalendarComponentProps) => {
-  const { isCalendarFlipped, Wrapper, calendarClick, ...propes } = props;
+  const { isCalendarFlipped, Wrapper, calendarClick } = props;
 
   const monthElements = [];
   for (let i = 0; i < 3; i++)

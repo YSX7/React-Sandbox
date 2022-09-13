@@ -1,5 +1,5 @@
 export type RemovePostFunction = (postItem: IPost) => void;
-export type SortValue = keyof IPost | number;
+export type SortValue = keyof IPost | number | string;
 
 export interface IPost {
   id: number;

@@ -1,40 +1,45 @@
 import { IPost, SortValue } from "@/types/types";
 import React, { FC } from "react";
-import { Select } from "@chakra-ui/react";
+import {
+  Select,
+  SelectProps,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import "./style.module.css";
 
 interface IMySelectOption {
   value: keyof IPost | number;
   name: string;
 }
 
-interface MySelectProps {
+interface MySelectProps extends SelectProps {
   defaultValue?: string;
   options?: IMySelectOption[];
   value: SortValue;
-  onChange: (selectedSort: SortValue) => void;
 }
 
 const MySelect: FC<MySelectProps> = ({
-  options,
+  children,
   defaultValue,
   value,
   onChange,
 }) => {
+  let fontColor = useColorModeValue("blackAlpha.900", "whiteAlpha.900");
+  let placeholderColor = useColorModeValue("gray.500", "whiteAlpha.400");
+
   return (
     <Select
       value={value}
-      onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-        onChange(event.target.value as keyof IPost)
-      }
+      onChange={onChange}
+      variant="placeholded"
+      color={value === "" ? placeholderColor : "inherit"}
+      _focus={{ color: fontColor }}
     >
-      <option disabled value="">
+      <option selected disabled value="">
         {defaultValue}
       </option>
-      {options?.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.name}
-        </option>
-      ))}
+      {children}
     </Select>
   );
 };

@@ -33,10 +33,14 @@ import Status from "./components/Status/Status";
 import { CalendarMode } from "./types";
 import Button from "@/components/UI/button/MyButton";
 import Images from "./components/ListDays/Holidays";
+import { useEffect } from "react";
 
-type CalendarProps = { events: IEvent[] };
+type CalendarProps = {
+  setDate: React.Dispatch<React.SetStateAction<string>>;
+  events: IEvent[];
+};
 
-const Calendar: FC<CalendarProps> = (props) => {
+const Calendar: FC<CalendarProps> = ({ setDate, ...props }) => {
   const changeMonth = (offset: number) => {
     setSelectedDate(selectedDate.add(offset, "M"));
   };
@@ -138,6 +142,7 @@ const Calendar: FC<CalendarProps> = (props) => {
             Wrapper={TableCSSTransition}
             isCalendarFlipped={isCalendarFlipped}
             selectedDate={selectedDate}
+            calendarClick={onDayClick}
           />
         );
       case CalendarMode.Months:
@@ -158,15 +163,16 @@ const Calendar: FC<CalendarProps> = (props) => {
             calendarClick={onYearClick}
           />
         );
-      default:
-        return (
-          <ListDays
-            Wrapper={TableCSSTransition}
-            isCalendarFlipped={isCalendarFlipped}
-            selectedDate={selectedDate}
-          />
-        );
     }
+  };
+
+  const onDayClick = (newDay: number, newMonth?: number) => {
+    setSelectedDate(
+      newMonth
+        ? selectedDate.month(newMonth).date(newDay)
+        : selectedDate.date(newDay)
+    );
+    setIsScrolling(false);
   };
 
   const onMonthClick = (newMonth: number) => {
@@ -182,6 +188,10 @@ const Calendar: FC<CalendarProps> = (props) => {
     setIsScrolling(false);
     setIsZoomIn(false);
   };
+
+  useEffect(() => {
+    setDate(selectedDate.format("YYYY-MM-DD"));
+  }, [selectedDate]);
 
   return (
     <Box className={classes.container}>

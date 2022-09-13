@@ -1,5 +1,5 @@
 import Calendar from "@/components/UI/calendar/Calendar";
-import React, { FC, useState } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import Button from "@/components/UI/button/MyButton";
 import MyModal from "@/components/UI/modal/MyModal";
 import {
@@ -14,16 +14,20 @@ import {
   useDisclosure,
   Button as ChakraButton,
 } from "@chakra-ui/react";
-import EventForm from "@/components/UI/calendar/components/EventForm";
+import EventForm from "@/components/EventForm";
+import dayjs, { Dayjs } from "dayjs";
 
 type Props = {};
 
 const Events: FC = (props: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedDateString, setSelectedDateString] = useState<string>(
+    dayjs().format("YYYY-MM-DD")
+  );
 
   return (
     <React.Fragment>
-      <Calendar events={[]} />
+      <Calendar setDate={setSelectedDateString} events={[]} />
       <Button m={"10px 0"} onClick={onOpen}>
         Добавить событие
       </Button>
@@ -34,14 +38,23 @@ const Events: FC = (props: Props) => {
           <DrawerHeader>Добавьте ваше событие</DrawerHeader>
 
           <DrawerBody>
-            <EventForm />
+            <EventForm
+              id="event-form"
+              selectedDateString={selectedDateString}
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log(e);
+              }}
+            />
           </DrawerBody>
 
           <DrawerFooter>
             <ChakraButton variant="outline" mr={3} onClick={onClose}>
               Cancel
             </ChakraButton>
-            <Button colorScheme="blue">Save</Button>
+            <Button colorScheme="blue" form="event-form" type="submit">
+              Save
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

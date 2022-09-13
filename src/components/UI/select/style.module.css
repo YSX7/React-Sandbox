@@ -1,0 +1,8 @@
+select {
+  transition: color 0s;
+}
+
+select:focus {
+  /* color: white; */
+  transition: color 0s;
+}

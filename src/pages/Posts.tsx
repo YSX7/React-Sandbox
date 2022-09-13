@@ -16,6 +16,13 @@ import { IFilter, IPost, SortValue } from "@/types/types";
 import ChakraModal from "@/components/UI/chakraModal/ChakraModal";
 import { useDisclosure } from "@chakra-ui/react";
 
+const countOptions = [
+  { value: 5, name: "5" },
+  { value: 10, name: "10" },
+  { value: 25, name: "25" },
+  { value: -1, name: "Все" },
+];
+
 function Posts() {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [filter, setFilter] = useState<IFilter>({
@@ -71,15 +78,15 @@ function Posts() {
       <PostFilter filter={filter} setFilter={setFilter} />
       <MySelect
         value={limit}
-        onChange={(value: SortValue) => setLimit(value as number)}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+          setLimit(parseInt(e.target.value))
+        }
         defaultValue="Кол-во элементов на странице"
-        options={[
-          { value: 5, name: "5" },
-          { value: 10, name: "10" },
-          { value: 25, name: "25" },
-          { value: -1, name: "Все" },
-        ]}
-      />
+      >
+        {countOptions.map((elem) => (
+          <option value={elem.value}>{elem.name}</option>
+        ))}
+      </MySelect>
       <MyButton style={{ marginTop: "10px" }} onClick={() => setModal(true)}>
         Создать пост
       </MyButton>

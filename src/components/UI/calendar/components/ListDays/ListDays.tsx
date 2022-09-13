@@ -8,6 +8,8 @@ import {
   TableCellProps,
   Image as ChakraImage,
   Portal,
+  chakra,
+  theme,
 } from "@chakra-ui/react";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import dayjs from "dayjs";
@@ -16,17 +18,22 @@ import classes from "./ListDays.module.css";
 import calendarClasses from "../../Calendar.module.css";
 import { CalendarComponentProps } from "../../types";
 import Holidays from "./Holidays";
+import classNames from "classnames";
 
-const ListDays = (props: CalendarComponentProps) => {
+const ListDays = ({
+  selectedDate,
+  isCalendarFlipped,
+  Wrapper,
+  calendarClick,
+  ...props
+}: CalendarComponentProps) => {
   // for (const path in Images) {
   //   Images[path]().then((mod) => {
   //     console.log(path, mod);
   //   });
   // }
-  console.log(Holidays);
   const [holidayImage, setHolidayImage] = useState("");
   const [holidayHovered, setHolidayHovered] = useState(false);
-  const { selectedDate, isCalendarFlipped, Wrapper } = props;
 
   const constructDaysCalendar = (): ReactJSXElement[] => {
     const result = [];
@@ -44,12 +51,21 @@ const ListDays = (props: CalendarComponentProps) => {
       for (let i = 0; i < 7; i++) {
         let attributes: TableCellProps = {};
         let className = "";
-        //Если дни с других месяцев - затеняем
-        if (loopMonth.month() !== selectedDate.month())
-          className = calendarClasses.neighbour;
+        //Если дни с других месяцев - затеняем,
         //Если текущий день - выделяем
-        if (dayjs().format("DMYYYY") === loopMonth.format("DMYYYY"))
-          className = calendarClasses.today;
+        className = classNames(
+          {
+            [calendarClasses.neighbour]:
+              loopMonth.month() !== selectedDate.month(),
+          },
+          {
+            [calendarClasses.today]:
+              dayjs().format("DMYYYY") === loopMonth.format("DMYYYY"),
+          },
+          {
+            [calendarClasses.selected]: selectedDate.isSame(loopMonth),
+          }
+        );
         //Если 3 сентября - активируем Шуфутинского
         let dm = loopMonth.format("DM") as keyof typeof Holidays;
         if (Holidays[dm]) {
@@ -66,6 +82,26 @@ const ListDays = (props: CalendarComponentProps) => {
             className={className}
             key={loopMonth.format("DMYYYY")}
             {...attributes}
+            title={loopMonth.format("YYYY-M-D")}
+            onClick={(e) => {
+              console.log(e);
+              let cellDate = dayjs(e.currentTarget.title);
+
+              if (calendarClick) {
+                const date = cellDate.date();
+                if (selectedDate.month() !== cellDate.month()) {
+                  calendarClick(date, cellDate.month());
+                } else {
+                  calendarClick(date);
+                }
+              }
+              // let month =
+              //   selectedDate.month() !== cellDate.month()
+              //     ? cellDate.month()
+              //     : undefined;
+              // calendarClick !== undefined &&
+              //   calendarClick(cellDate.date(), month!);
+            }}
           >
             {loopMonth.format("DD")}
           </Td>

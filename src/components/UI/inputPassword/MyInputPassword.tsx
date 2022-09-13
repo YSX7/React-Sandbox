@@ -24,7 +24,7 @@ const MyInputPassword = React.forwardRef<
           onMouseDown={handleClick}
           onMouseUp={handleClick}
         >
-          {isShow ? "Показать" : "Скрыть"}
+          {!isShow ? "Показать" : "Скрыть"}
         </Button>
       </InputRightElement>
     </InputGroup>

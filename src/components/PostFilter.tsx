@@ -13,20 +13,21 @@ const PostFilter: FC<PostFilterProps> = ({ filter, setFilter }) => {
     <div>
       <MyInput
         value={filter.query}
-        onChange={(e) => setFilter({ ...filter, query: e.target.value })}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setFilter({ ...filter, query: e.target.value })
+        }
         placeholder="Поиск..."
       />
       <MySelect
         defaultValue="Сортировка"
-        options={[
-          { value: "title", name: "По заголовку" },
-          { value: "body", name: "По содержимому" },
-        ]}
         value={filter.sort}
-        onChange={(selectedSort: SortValue) =>
-          setFilter({ ...filter, sort: selectedSort as keyof IPost })
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+          setFilter({ ...filter, sort: e.target.value as keyof IPost })
         }
-      ></MySelect>
+      >
+        <option value="title">По заголовку</option>
+        <option value="body">По содержимому</option>
+      </MySelect>
     </div>
   );
 };

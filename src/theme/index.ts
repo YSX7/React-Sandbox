@@ -6,7 +6,8 @@ import {
   withDefaultColorScheme,
   type ThemeConfig,
 } from "@chakra-ui/react";
-import { SystemStyleFunction } from "@chakra-ui/theme-tools";
+import { SystemStyleFunction, mode } from "@chakra-ui/theme-tools";
+import type { StyleFunctionProps } from "@chakra-ui/styled-system";
 
 export const IconButton: ComponentStyleConfig = {
   variants: {
@@ -37,18 +38,34 @@ const Button: ComponentStyleConfig = {
   },
 };
 
+const Select: ComponentStyleConfig = {
+  variants: {
+    placeholded: (props: StyleFunctionProps) => {
+      return {
+        field: {
+          // color: "gray.400",
+          border: "1px solid",
+          borderColor: "inherit",
+          background: "inherit",
+        },
+      };
+    },
+  },
+};
+
 const overrides = {
   // styles: {
-  //   global: {
-  //     button: {
-  //       bg: "red",
+  //   global: (props: StyleFunctionProps) => ({
+  //     "*[aria-expanded=true]": {
+  //       color: "red", //mode("gray.400", "whiteAlpha.400")(props),
   //     },
-  //   },
+  //   }),
   // },
-  colors: {},
+
   config: { initialColorMode: "dark", useSystemColorMode: false },
   components: {
     Button,
+    Select,
   },
 };
 
