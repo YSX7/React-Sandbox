@@ -10,23 +10,33 @@ import MySelect from "@/components/UI/select/MySelect";
 import { IUser } from "@/models/IUser";
 import { IEvent } from "@/models/IEvent";
 import { InvalidEvent } from "./types";
+import dayjs from "dayjs";
 
 interface EventProps
   extends React.DetailedHTMLProps<
     React.FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
   > {
-  event: IEvent;
-  setEvent: React.Dispatch<React.SetStateAction<IEvent>>;
+  author: string;
+  selectedDate?: string;
   selectData: IUser[];
+  submit?: (event: IEvent) => void;
 }
 
 const EventForm: FC<EventProps> = ({
-  event,
-  setEvent,
   selectData,
+  selectedDate,
+  submit,
+  author,
   ...props
 }) => {
+  const [event, setEvent] = useState<IEvent>({
+    author: "",
+    date: selectedDate ? selectedDate : dayjs().format("YYYY-MM-DD"),
+    description: "",
+    guest: "",
+  });
+
   const [invalidEvent, setInvalidEvent] = useState<InvalidEvent>(
     new InvalidEvent({})
   );
@@ -41,7 +51,12 @@ const EventForm: FC<EventProps> = ({
   }
 
   return (
-    <form {...props}>
+    <form
+      onSubmit={(e) => {
+        if (submit) submit({ ...event, author: author });
+      }}
+      {...props}
+    >
       <FormControl isInvalid={invalidEvent.isInvalid()} isRequired>
         <FormLabel>Описание</FormLabel>
 

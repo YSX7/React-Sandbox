@@ -23,16 +23,12 @@ type Props = {};
 const Events: FC = (props: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [event, setEvent] = useState<IEvent>({
-    author: "",
-    date: dayjs().format("YYYY-MM-DD"),
-    description: "",
-    guest: "",
-  });
-
   const { fetchGuests } = useActions();
   const guests = useTypedSelector((state) => state.eventReducer.guests);
   const currentUser = useTypedSelector((state) => state.authReducer.user.login);
+  const [selectedDate, setselectedDate] = useState<string>(
+    dayjs().format("YYYY-MM-DD")
+  );
 
   useEffect(() => {
     fetchGuests();
@@ -40,7 +36,7 @@ const Events: FC = (props: Props) => {
 
   return (
     <React.Fragment>
-      <Calendar setDateForEvent={setEvent} events={[]} />
+      <Calendar setDateForEvent={setselectedDate} events={[]} />
       <Button m={"10px 0"} onClick={onOpen}>
         Добавить событие
       </Button>
@@ -53,15 +49,14 @@ const Events: FC = (props: Props) => {
           <DrawerBody>
             <EventForm
               id="event-form"
-              event={event}
-              setEvent={setEvent}
+              author={currentUser}
               selectData={guests}
-              onSubmit={(e) => {
-                e.preventDefault();
-                setEvent((prevState) => {
-                  return { ...prevState, author: currentUser };
-                });
-              }}
+              selectedDate={selectedDate}
+              // submit={(e) => {
+              //   setEvent((prevState) => {
+              //     return { ...prevState, author: currentUser };
+              //   });
+              // }}
             />
           </DrawerBody>
 

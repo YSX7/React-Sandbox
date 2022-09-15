@@ -36,7 +36,7 @@ import Images from "./components/ListDays/Holidays";
 import { useEffect } from "react";
 
 type CalendarProps = {
-  setDateForEvent: React.Dispatch<React.SetStateAction<IEvent>>;
+  setDateForEvent: React.Dispatch<React.SetStateAction<string>>;
   events: IEvent[];
 };
 
@@ -190,9 +190,7 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
   };
 
   useEffect(() => {
-    setDateForEvent((prevState) => {
-      return { ...prevState, date: selectedDate.format("YYYY-MM-DD") };
-    });
+    setDateForEvent(selectedDate.format("YYYY-MM-DD"));
   }, [selectedDate]);
 
   return (
