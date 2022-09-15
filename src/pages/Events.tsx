@@ -1,7 +1,6 @@
 import Calendar from "@/components/UI/calendar/Calendar";
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Button from "@/components/UI/button/MyButton";
-import MyModal from "@/components/UI/modal/MyModal";
 import {
   Drawer,
   DrawerBody,
@@ -10,24 +9,37 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Input,
   useDisclosure,
   Button as ChakraButton,
 } from "@chakra-ui/react";
 import EventForm from "@/components/EventForm";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import { useActions } from "@/hooks/useActions";
+import useTypedSelector from "@/hooks/useTypedSelector";
+import { IEvent } from "@/models/IEvent";
 
 type Props = {};
 
 const Events: FC = (props: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedDateString, setSelectedDateString] = useState<string>(
-    dayjs().format("YYYY-MM-DD")
-  );
+
+  const [event, setEvent] = useState<IEvent>({
+    author: "",
+    date: dayjs().format("YYYY-MM-DD"),
+    description: "",
+    guest: "",
+  });
+
+  const { fetchGuests } = useActions();
+  const guests = useTypedSelector((state) => state.eventReducer.guests);
+
+  useEffect(() => {
+    fetchGuests();
+  }, []);
 
   return (
     <React.Fragment>
-      <Calendar setDate={setSelectedDateString} events={[]} />
+      <Calendar setDateForEvent={setEvent} events={[]} />
       <Button m={"10px 0"} onClick={onOpen}>
         Добавить событие
       </Button>
@@ -40,7 +52,8 @@ const Events: FC = (props: Props) => {
           <DrawerBody>
             <EventForm
               id="event-form"
-              selectedDateString={selectedDateString}
+              selectedDateString={event.date}
+              selectData={guests}
               onSubmit={(e) => {
                 e.preventDefault();
                 console.log(e);
@@ -50,10 +63,10 @@ const Events: FC = (props: Props) => {
 
           <DrawerFooter>
             <ChakraButton variant="outline" mr={3} onClick={onClose}>
-              Cancel
+              Отмена
             </ChakraButton>
             <Button colorScheme="blue" form="event-form" type="submit">
-              Save
+              Добавить
             </Button>
           </DrawerFooter>
         </DrawerContent>

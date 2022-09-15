@@ -10,12 +10,15 @@ import { todo } from "./reducers/todos";
 import { ITodoState } from "@/store/reducers/todos/types";
 import { authReducer } from "./reducers/auth";
 import { AuthState } from "./reducers/auth/types";
+import eventReducer from "./reducers/event";
+import { EventState } from "./reducers/event/types";
 
 export type RootReducer = {
   cash: CashState;
   customer: CustomerState;
   todo: ITodoState;
   authReducer: AuthState;
+  eventReducer: EventState;
 };
 
 //const sagaMiddleware = createSagaMiddleware();
@@ -25,6 +28,7 @@ const rootReducer = combineReducers<RootReducer>({
   customer,
   todo,
   authReducer,
+  eventReducer,
 });
 
 export const store = createStore(

@@ -8,6 +8,7 @@ import {
 import { IUser } from "@/models/IUser";
 import { AppDispatch } from "@/store";
 import axios from "axios";
+import UserService from "@/API/UserService";
 
 export const AuthActionCreators = {
   setUser: (user: IUser): SetUserAction => ({
@@ -31,7 +32,7 @@ export const AuthActionCreators = {
       dispatch(AuthActionCreators.setError(""));
       dispatch(AuthActionCreators.setIsLoading(true));
       setTimeout(async () => {
-        const response = await axios.get<IUser[]>("./users.json");
+        const response = await UserService.getUsers();
         const mockUser = response.data.find(
           (elem) => elem.login === login && elem.password === password
         );

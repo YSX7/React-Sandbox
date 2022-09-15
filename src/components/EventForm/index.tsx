@@ -1,16 +1,12 @@
 import {
   FormControl,
-  FormControlProps,
   FormErrorMessage,
   FormLabel,
   Input,
-  Select,
-  useFormControlProps,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import React, { ChangeEvent, FC, FormHTMLAttributes, useState } from "react";
-import "./style.module.css";
+import React, { ChangeEvent, FC, useState } from "react";
 import MySelect from "@/components/UI/select/MySelect";
+import { IUser } from "@/models/IUser";
 
 interface EventProps
   extends React.DetailedHTMLProps<
@@ -18,9 +14,14 @@ interface EventProps
     HTMLFormElement
   > {
   selectedDateString: string;
+  selectData: IUser[];
 }
 
-const EventForm: FC<EventProps> = ({ selectedDateString, ...props }) => {
+const EventForm: FC<EventProps> = ({
+  selectedDateString,
+  selectData,
+  ...props
+}) => {
   const [isInvalidEvent, setisInvalidEvent] = useState(false);
 
   return (
@@ -43,7 +44,9 @@ const EventForm: FC<EventProps> = ({ selectedDateString, ...props }) => {
         <Input type="date" defaultValue={selectedDateString} />
         <FormLabel>Гость</FormLabel>
         <MySelect defaultValue="Выберите гостя" value="">
-          <option>Иван Васильич Крузенштерн</option>
+          {selectData.map((elem) => (
+            <option key={elem.login}>{elem.login}</option>
+          ))}
         </MySelect>
       </FormControl>
     </form>
