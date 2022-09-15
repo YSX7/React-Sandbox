@@ -24,21 +24,20 @@ const MySelect: FC<MySelectProps> = ({
   defaultValue,
   value,
   onChange,
+  ...props
 }) => {
   let fontColor = useColorModeValue("blackAlpha.900", "whiteAlpha.900");
   let placeholderColor = useColorModeValue("gray.500", "whiteAlpha.400");
 
   return (
     <Select
+      {...props}
       value={value}
       onChange={onChange}
-      variant="placeholded"
       color={value === "" ? placeholderColor : "inherit"}
       _focus={{ color: fontColor }}
     >
-      <option disabled value="">
-        {defaultValue}
-      </option>
+      <option value="">{defaultValue}</option>
       {children}
     </Select>
   );

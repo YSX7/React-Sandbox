@@ -32,6 +32,7 @@ const Events: FC = (props: Props) => {
 
   const { fetchGuests } = useActions();
   const guests = useTypedSelector((state) => state.eventReducer.guests);
+  const currentUser = useTypedSelector((state) => state.authReducer.user.login);
 
   useEffect(() => {
     fetchGuests();
@@ -57,7 +58,9 @@ const Events: FC = (props: Props) => {
               selectData={guests}
               onSubmit={(e) => {
                 e.preventDefault();
-                console.log(e);
+                setEvent((prevState) => {
+                  return { ...prevState, author: currentUser };
+                });
               }}
             />
           </DrawerBody>
