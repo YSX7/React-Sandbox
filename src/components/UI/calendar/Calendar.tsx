@@ -191,7 +191,6 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
 
   useEffect(() => {
     setDateForEvent((prevState) => {
-      console.log(prevState);
       return { ...prevState, date: selectedDate.format("YYYY-MM-DD") };
     });
   }, [selectedDate]);

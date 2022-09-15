@@ -36,7 +36,7 @@ const MySelect: FC<MySelectProps> = ({
       color={value === "" ? placeholderColor : "inherit"}
       _focus={{ color: fontColor }}
     >
-      <option selected disabled value="">
+      <option disabled value="">
         {defaultValue}
       </option>
       {children}

@@ -52,7 +52,8 @@ const Events: FC = (props: Props) => {
           <DrawerBody>
             <EventForm
               id="event-form"
-              selectedDateString={event.date}
+              event={event}
+              setEvent={setEvent}
               selectData={guests}
               onSubmit={(e) => {
                 e.preventDefault();
