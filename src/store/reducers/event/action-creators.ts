@@ -2,6 +2,7 @@ import UserService from "@/API/UserService";
 import { IEvent } from "@/models/IEvent";
 import { IUser } from "@/models/IUser";
 import { AppDispatch } from "@/store";
+import React from "react";
 import { EventActionEnum, SetEventsAction, SetGuestsAction } from "./types";
 
 export const EventActionCreators = {
@@ -19,6 +20,16 @@ export const EventActionCreators = {
       dispatch(EventActionCreators.setGuests(response.data));
     } catch (e) {
       console.error(e);
+    }
+  },
+  createEvent: (event: IEvent) => async (dispatch: AppDispatch) => {
+    try {
+      const eventsString = localStorage.getItem("events") || "[]";
+      const events = JSON.parse(eventsString) as IEvent[];
+      events.push(event);
+      dispatch(EventActionCreators.setEvents(events));
+    } catch (e) {
+      console.log(e);
     }
   },
 };

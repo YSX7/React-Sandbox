@@ -10,10 +10,13 @@ export interface CalendarComponentProps extends HTMLAttributes<HTMLDivElement> {
   selectedDate: Dayjs;
   isCalendarFlipped: boolean;
   Wrapper: React.FC<WrapperProps>;
-  calendarClick?:
-    | ((newValue: number) => void)
-    | ((newDay: number, newMonth?: number) => void);
+  calendarClick?: CalendarClick;
 }
+
+export type CalendarClick =
+  | undefined
+  | ((newValue: number) => void)
+  | ((newDay: number, newMonth?: number) => void);
 
 export enum CalendarMode {
   Days = "Days",

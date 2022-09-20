@@ -23,7 +23,8 @@ type Props = {};
 const Events: FC = (props: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { fetchGuests } = useActions();
+  const { createEvent, fetchGuests } = useActions();
+
   const guests = useTypedSelector((state) => state.eventReducer.guests);
   const currentUser = useTypedSelector((state) => state.authReducer.user.login);
   const [selectedDate, setselectedDate] = useState<string>(
@@ -52,11 +53,7 @@ const Events: FC = (props: Props) => {
               author={currentUser}
               selectData={guests}
               selectedDate={selectedDate}
-              // submit={(e) => {
-              //   setEvent((prevState) => {
-              //     return { ...prevState, author: currentUser };
-              //   });
-              // }}
+              submit={createEvent}
             />
           </DrawerBody>
 
