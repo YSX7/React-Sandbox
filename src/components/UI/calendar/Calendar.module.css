@@ -23,10 +23,6 @@ table {
   cursor: pointer;
 }
 
-.parent td:hover:not(.selected) {
-  background-color: #00808042;
-}
-
 .calendarFlipImg {
   position: absolute;
   margin-left: auto;
@@ -87,4 +83,8 @@ table.centered td {
 .selected {
   background: teal;
   color: white;
+}
+
+.parent td:hover:not(.selected) {
+  background-color: #00808042;
 }

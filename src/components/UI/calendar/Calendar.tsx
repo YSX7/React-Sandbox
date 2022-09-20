@@ -53,7 +53,9 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
     setSelectedDate(selectedDate.add(offset * 10, "y"));
   };
 
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs({ M: dayjs().month(), y: dayjs().year(), d: dayjs().date() })
+  );
   const [isCalendarFlipped, setIsCalendarFlipped] = useState(false);
   const [calendarMode, setCalendarMode] = useState(CalendarMode.Days);
   const [isMoveLeft, setIsMoveLeft] = useState(false);

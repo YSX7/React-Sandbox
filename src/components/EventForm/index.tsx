@@ -53,6 +53,7 @@ const EventForm: FC<EventProps> = ({
   return (
     <form
       onSubmit={(e) => {
+        e.preventDefault();
         if (submit) submit({ ...event, author: author });
       }}
       {...props}
