@@ -53,6 +53,12 @@ const Select: ComponentStyleConfig = {
   },
 };
 
+const Table: ComponentStyleConfig = {
+  baseStyle: {
+    padding: "0",
+  },
+};
+
 const overrides = {
   // styles: {
   //   global: (props: StyleFunctionProps) => ({
@@ -66,10 +72,13 @@ const overrides = {
   components: {
     Button,
     Select,
+    Table: Table,
   },
 };
 
-export default extendTheme(
+const theme = extendTheme(
   overrides,
   withDefaultColorScheme({ colorScheme: "teal" })
 );
+
+export default theme;

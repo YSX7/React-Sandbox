@@ -12,7 +12,7 @@ import {
   useDisclosure,
   Button as ChakraButton,
 } from "@chakra-ui/react";
-import EventForm from "@/components/EventForm";
+import EventForm from "@/components/eventForm";
 import dayjs from "dayjs";
 import { useActions } from "@/hooks/useActions";
 import useTypedSelector from "@/hooks/useTypedSelector";
@@ -23,9 +23,9 @@ type Props = {};
 const Events: FC = (props: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { createEvent, fetchGuests } = useActions();
+  const { createEvent, fetchGuests, fetchEvents } = useActions();
 
-  const guests = useTypedSelector((state) => state.eventReducer.guests);
+  const { guests, events } = useTypedSelector((state) => state.eventReducer);
   const currentUser = useTypedSelector((state) => state.authReducer.user.login);
   const [selectedDate, setselectedDate] = useState<string>(
     dayjs().format("YYYY-MM-DD")
@@ -33,7 +33,10 @@ const Events: FC = (props: Props) => {
 
   useEffect(() => {
     fetchGuests();
-  }, []);
+    fetchEvents(currentUser);
+  }, [currentUser]);
+
+  console.log(events);
 
   return (
     <React.Fragment>
@@ -61,7 +64,12 @@ const Events: FC = (props: Props) => {
             <ChakraButton variant="outline" mr={3} onClick={onClose}>
               Отмена
             </ChakraButton>
-            <Button colorScheme="blue" form="event-form" type="submit">
+            <Button
+              colorScheme="blue"
+              form="event-form"
+              type="submit"
+              onClick={onClose}
+            >
               Добавить
             </Button>
           </DrawerFooter>

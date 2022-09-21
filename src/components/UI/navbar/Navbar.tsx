@@ -43,30 +43,31 @@ function Navbar() {
       {isAuth && (
         <React.Fragment>
           <div className={classNames(classes.navbar__items, classes.left)}>
-            <Link to="/posts">Posts</Link>
-            <Link to="/about">About</Link>
-            <Link to="/test">Test counter</Link>
+            <Link to="/posts">Посты</Link>
+            <Link to="/about">О нас</Link>
+            <Link to="/test">Тест счётчик</Link>
             <Link to="/redux">Redux</Link>
-            <Link to="/events">Events</Link>
+            <Link to="/events">События</Link>
           </div>
           <div className={classNames(classes.navbar__items, classes.right)}>
-            <IconButton
-              color="teal.500"
-              aria-label="Change color mode"
-              onClick={toggleColorMode}
-              icon={colorMode === "dark" ? <MoonIcon /> : <SunIcon />}
-              variant="unstyled"
-            ></IconButton>
             <div className={classes.login}>{user.login}</div>
             <MyButton
               variant={MyButtonVariant.shadowed}
               onClick={() => logout()}
             >
-              Logout
+              Выйти
             </MyButton>
           </div>
         </React.Fragment>
       )}
+      <IconButton
+        color="teal.500"
+        aria-label="Change color mode"
+        onClick={toggleColorMode}
+        icon={colorMode === "dark" ? <MoonIcon /> : <SunIcon />}
+        variant="unstyled"
+        ml={isAuth ? "" : "auto"}
+      ></IconButton>
     </Flex>
   );
 }

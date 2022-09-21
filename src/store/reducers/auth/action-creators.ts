@@ -39,15 +39,15 @@ export const AuthActionCreators = {
         if (mockUser) {
           localStorage.setItem("auth", "true");
           localStorage.setItem("username", login);
-          dispatch(AuthActionCreators.setIsAuth(true));
           dispatch(AuthActionCreators.setUser(mockUser));
+          dispatch(AuthActionCreators.setIsAuth(true));
         } else {
           dispatch(
             AuthActionCreators.setError("Неккоректный логин или пароль")
           );
         }
         dispatch(AuthActionCreators.setIsLoading(false));
-      }, 1000);
+      }, 0);
     } catch (e) {
       dispatch(AuthActionCreators.setError(`Ошибка при логине: ${e}`));
     }

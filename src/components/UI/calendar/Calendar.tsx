@@ -11,7 +11,7 @@ import { CSSTransition } from "react-transition-group";
 import classes from "./Calendar.module.css";
 import "./transitions/CalendarFlipTransition.css";
 import "./transitions/CalendarSlideTransition.css";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import "dayjs/locale/ru";
 import Shoefootinskiy from "/september3.mp3";
@@ -35,9 +35,13 @@ import Button from "@/components/UI/button/MyButton";
 import Images from "./components/ListDays/Holidays";
 import { useEffect } from "react";
 
+type CellRenderFunction = (dayjsDate: Dayjs) => void;
+
 type CalendarProps = {
   setDateForEvent: React.Dispatch<React.SetStateAction<string>>;
   events: IEvent[];
+  dateCellRender?: CellRenderFunction;
+  monthYearCellRender?: CellRenderFunction;
 };
 
 const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {

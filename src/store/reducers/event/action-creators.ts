@@ -6,10 +6,7 @@ import React from "react";
 import { EventActionEnum, SetEventsAction, SetGuestsAction } from "./types";
 
 export const EventActionCreators = {
-  setEvents: (events: IEvent[]): SetEventsAction => ({
-    type: EventActionEnum.SET_EVENTS,
-    payload: events,
-  }),
+  // Гости
   setGuests: (guests: IUser[]): SetGuestsAction => ({
     type: EventActionEnum.SET_GUESTS,
     payload: guests,
@@ -22,14 +19,32 @@ export const EventActionCreators = {
       console.error(e);
     }
   },
+  // События
   createEvent: (event: IEvent) => async (dispatch: AppDispatch) => {
     try {
       const eventsString = localStorage.getItem("events") || "[]";
       const events = JSON.parse(eventsString) as IEvent[];
       events.push(event);
       dispatch(EventActionCreators.setEvents(events));
+      localStorage.setItem("events", JSON.stringify(events));
     } catch (e) {
       console.log(e);
     }
   },
+  fetchEvents: (author: string) => async (dispatch: AppDispatch) => {
+    try {
+      const eventsString = localStorage.getItem("events") || "[]";
+      let events = JSON.parse(eventsString) as IEvent[];
+      events = events.filter(
+        (elem) => elem.author === author || elem.guest === author
+      );
+      dispatch(EventActionCreators.setEvents(events));
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  setEvents: (events: IEvent[]): SetEventsAction => ({
+    type: EventActionEnum.SET_EVENTS,
+    payload: events,
+  }),
 };

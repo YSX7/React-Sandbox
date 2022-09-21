@@ -23,6 +23,7 @@ const MyInputPassword = React.forwardRef<
           fontSize={"sm"}
           onMouseDown={handleClick}
           onMouseUp={handleClick}
+          variant="outline"
         >
           {!isShow ? "Показать" : "Скрыть"}
         </Button>
