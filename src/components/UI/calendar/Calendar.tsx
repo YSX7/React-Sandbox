@@ -34,6 +34,11 @@ import { CalendarMode } from "./types";
 import Button from "@/components/UI/button/MyButton";
 import Images from "./components/ListDays/Holidays";
 import { useEffect } from "react";
+import ListRender from "./components/ListRender";
+import {
+  useScrollTransition,
+  useZoomTransition,
+} from "./components/transitions";
 
 type CellRenderFunction = (dayjsDate: Dayjs) => void;
 
@@ -62,8 +67,8 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
   );
   const [isCalendarFlipped, setIsCalendarFlipped] = useState(false);
   const [calendarMode, setCalendarMode] = useState(CalendarMode.Days);
-  const [isMoveLeft, setIsMoveLeft] = useState(false);
-  const [isZoomIn, setIsZoomIn] = useState(true);
+  const [setIsMoveLeft, scrollTransition] = useScrollTransition(selectedDate);
+  const [setIsZoomIn, zoomTransition] = useZoomTransition(CalendarMode.Days);
   const [isScrolling, setIsScrolling] = useState(false);
 
   let navButtonMethod = useCallback(
@@ -92,52 +97,6 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
     return song;
   }, []);
 
-  const scrollTransition = useTransition<string, UseTransitionProps>(
-    selectedDate.format("DDMMYYYY"),
-    {
-      initial: { transform: "translateX(0vw)" },
-      from: {
-        transform: `translateX(${isMoveLeft ? "-100" : "100"}vw)`,
-        position: "absolute",
-        left: "25%",
-        opacity: 0,
-      },
-      enter: {
-        transform: "translateX(0vw)",
-        position: "",
-        opacity: 1,
-      },
-      leave: {
-        transform: `translateX(${isMoveLeft ? "100" : "-100"}vw)`,
-        position: "absolute",
-        left: "25%",
-        opacity: 0,
-      },
-      config: { duration: 500, easing: easings.easeOutExpo },
-    }
-  );
-
-  const zoomTransition = useTransition<string, UseTransitionProps>(
-    calendarMode,
-    {
-      initial: { scale: 1, opacity: 1, position: "initial" },
-      from: {
-        scale: isZoomIn ? 4 : 0,
-        opacity: 0,
-        left: "25%",
-      },
-      enter: { scale: 1, opacity: 1, position: "initial" },
-      leave: {
-        scale: isZoomIn ? 0 : 4,
-        opacity: 0,
-        position: "absolute",
-        left: "25%",
-      },
-      trail: 125,
-      config: { duration: 250 },
-    }
-  );
-
   const renderListElements = (calendarArg?: CalendarMode) => {
     switch (calendarArg ? calendarArg : calendarMode) {
       case CalendarMode.Days:
@@ -147,6 +106,7 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
             isCalendarFlipped={isCalendarFlipped}
             selectedDate={selectedDate}
             calendarClick={onDayClick}
+            // dateCellRender={}
           />
         );
       case CalendarMode.Months:
@@ -270,6 +230,41 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
             </animated.div>
           );
         })}
+
+        {/* {zoomTransition((zoomStyles, zoomItem, zt) => {
+          return isScrolling ? (
+            scrollTransition((styles, item, t) => {
+              return (
+                <animated.div
+                  className={classes.animatedDiv}
+                  style={isScrolling ? styles : zoomStyles}
+                >
+                  {
+                    <ListRender
+                      Wrapper={TableCSSTransition}
+                      isCalendarFlipped={isCalendarFlipped}
+                      selectedDate={selectedDate}
+                      calendarClick={onDayClick}
+                      calendarMode={calendarMode}
+                    />
+                  }
+                </animated.div>
+              );
+            })
+          ) : (
+            <animated.div className={classes.animatedDiv} style={zoomStyles}>
+              {
+                <ListRender
+                  Wrapper={TableCSSTransition}
+                  isCalendarFlipped={isCalendarFlipped}
+                  selectedDate={selectedDate}
+                  calendarClick={onDayClick}
+                  calendarMode={calendarMode}
+                />
+              }
+            </animated.div>
+          );
+        })} */}
 
         <NavigationButton
           type={CalendarNavigationButtonType.Right}

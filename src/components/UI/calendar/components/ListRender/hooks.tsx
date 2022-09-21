@@ -1,4 +1,4 @@
-import { TableCellProps, Td, Tr, Text, Box } from "@chakra-ui/react";
+import { TableCellProps, Td, Tr } from "@chakra-ui/react";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import classNames from "classnames";
 import dayjs, { Dayjs } from "dayjs";
@@ -7,14 +7,14 @@ import calendarClasses from "../../Calendar.module.css";
 import {
   CalendarClick,
   CalendarComponentProps,
-  RenderFunction,
+  CalendarMode,
 } from "../../types";
 import Holidays from "./Holidays";
 
 export const useDaysCalendar = (
+  calendarMode: CalendarMode,
   selectedDate: Dayjs,
-  calendarClick: CalendarClick,
-  cellRenderFunction?: RenderFunction
+  calendarClick: CalendarClick
 ): [ReactJSXElement[], string, boolean] => {
   const [holidayImage, setHolidayImage] = useState("");
   const [holidayHovered, setHolidayHovered] = useState(false);
@@ -78,12 +78,15 @@ export const useDaysCalendar = (
                   calendarClick(date);
                 }
               }
+              // let month =
+              //   selectedDate.month() !== cellDate.month()
+              //     ? cellDate.month()
+              //     : undefined;
+              // calendarClick !== undefined &&
+              //   calendarClick(cellDate.date(), month!);
             }}
           >
-            <Text>{loopMonth.format("DD")}</Text>
-            {cellRenderFunction !== undefined && (
-              <Box>{cellRenderFunction(loopMonth)}</Box>
-            )}
+            {loopMonth.format("DD")}
           </Td>
         );
         loopMonth = loopMonth.add(1, "d");

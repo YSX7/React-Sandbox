@@ -19,17 +19,13 @@ const ListDays = ({
   isCalendarFlipped,
   Wrapper,
   calendarClick,
+  dateCellRender,
   ...props
 }: CalendarComponentProps) => {
-  // for (const path in Images) {
-  //   Images[path]().then((mod) => {
-  //     console.log(path, mod);
-  //   });
-  // }
-
   const [currentMonthElements, holidayImage, holidayHovered] = useDaysCalendar(
     selectedDate,
-    calendarClick
+    calendarClick,
+    dateCellRender
   );
 
   return (
@@ -57,4 +53,5 @@ const ListDays = ({
   );
 };
 
-export default React.memo(ListDays);
+//Здесь было React.memo(ListDays), мб оно уменьшало кол-во отрисовок
+export default ListDays;
