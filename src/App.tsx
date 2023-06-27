@@ -2,7 +2,7 @@ import "@/styles/app.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import AppRouter from "./components/router/AppRouter";
 import Navbar from "./components/UI/navbar/Navbar";
 import { AuthContext } from "./context";
@@ -25,10 +25,10 @@ function App() {
   return (
     <AuthContext.Provider value={{ /* isAuth, setIsAuth, */ isLoading }}>
       <ChakraProvider theme={theme}>
-        <BrowserRouter>
+        <HashRouter>
           <Navbar />
           <AppRouter />
-        </BrowserRouter>
+        </HashRouter>
       </ChakraProvider>
     </AuthContext.Provider>
   );
