@@ -30,7 +30,7 @@ import {
   UseTransitionProps,
 } from "react-spring";
 import Status from "./components/Status/Status";
-import { CalendarMode } from "./types";
+import { CalendarMode, RenderFunction } from "./types";
 import Button from "@/components/UI/button/MyButton";
 import Images from "./components/ListDays/Holidays";
 import { useEffect } from "react";
@@ -40,13 +40,11 @@ import {
   useZoomTransition,
 } from "./components/transitions";
 
-type CellRenderFunction = (dayjsDate: Dayjs) => void;
-
 type CalendarProps = {
   setDateForEvent: React.Dispatch<React.SetStateAction<string>>;
   events: IEvent[];
-  dateCellRender?: CellRenderFunction;
-  monthYearCellRender?: CellRenderFunction;
+  dateCellRender?: RenderFunction;
+  monthYearCellRender?: RenderFunction;
 };
 
 const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
@@ -106,7 +104,7 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
             isCalendarFlipped={isCalendarFlipped}
             selectedDate={selectedDate}
             calendarClick={onDayClick}
-            // dateCellRender={}
+            dateCellRender={props.dateCellRender}
           />
         );
       case CalendarMode.Months:
@@ -191,7 +189,7 @@ const Calendar: FC<CalendarProps> = ({ setDateForEvent, ...props }) => {
           >
             Перевернуть календарь
           </Button>
-          <Button>Test</Button>
+          {/* <Button>Test</Button> */}
         </GridItem>
       </Grid>
       <div className={classes.parent} style={{ height: "100%" }}>
