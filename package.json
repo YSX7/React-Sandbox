@@ -1,6 +1,7 @@
 {
   "name": "my_first_app",
   "version": "0.1.0",
+  "homepage": "https://ysx7.github.io/React-Sandbox",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.3",
@@ -35,6 +36,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "vite",
     "build": "vite build",
     "test": "react-scripts test",
@@ -60,6 +63,7 @@
   },
   "devDependencies": {
     "@types/react-dom": "^18.0.6",
+    "gh-pages": "^5.0.0",
     "typescript-plugin-css-modules": "^3.4.0"
   }
 }
